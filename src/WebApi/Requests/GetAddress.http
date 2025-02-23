@@ -1,0 +1,21 @@
+@baseUrl = https://localhost:5000
+
+### Request #1: N76RS
+GET {{baseUrl}}/api/location/N76RS
+Accept: application/json
+
+### Request #2: SW46TA
+GET {{baseUrl}}/api/location/SW46TA
+Accept: application/json
+
+### Request #3: SW1A
+GET {{baseUrl}}/api/location/SW1A
+Accept: application/json
+
+### Request #4: W1B3AG
+GET {{baseUrl}}/api/location/W1B3AG
+Accept: application/json
+
+### Request #5: PO63TD
+GET {{baseUrl}}/api/location/PO63TD
+Accept: application/json

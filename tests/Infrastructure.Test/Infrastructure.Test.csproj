@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Remove="coverlet.collector" />
+    </ItemGroup>
+</Project>
