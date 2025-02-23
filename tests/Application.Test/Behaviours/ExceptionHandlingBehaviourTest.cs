@@ -26,11 +26,11 @@ public class ExceptionHandlingBehaviorTests
     public async Task Handle_SuccessfulRequest_ShouldPassThrough(TestQuery request)
     {
         // Arrange
-        var expectedResult = Result.Success();
+        Result? expectedResult = Result.Success();
         RequestHandlerDelegate<Result> next = () => Task.FromResult(expectedResult);
 
         // Act
-        var result = await _behavior.Handle(request, next, CancellationToken.None);
+        Result result = await _behavior.Handle(request, next, CancellationToken.None);
 
         // Assert
         result.ShouldBe(expectedResult);
@@ -39,7 +39,8 @@ public class ExceptionHandlingBehaviorTests
             x => x.Log(
                 LogLevel.Error,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((o, t) => o.ToString()!.Contains("Unhandled Exception occurred for Request TestQuery")),
+                It.Is<It.IsAnyType>((o, t) =>
+                    o.ToString()!.Contains("Unhandled Exception occurred for Request TestQuery")),
                 It.IsAny<Exception>(),
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             Times.Never);
@@ -54,7 +55,7 @@ public class ExceptionHandlingBehaviorTests
             throw new Exception("Test exception");
 
         // Act
-        var result = await _behavior.Handle(request, next, CancellationToken.None);
+        Result result = await _behavior.Handle(request, next, CancellationToken.None);
 
         // Assert
         result.Status.ShouldBe(ResultStatus.CriticalError);
@@ -64,7 +65,8 @@ public class ExceptionHandlingBehaviorTests
             x => x.Log(
                 LogLevel.Error,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((o, t) => o.ToString()!.Contains("Unhandled Exception occurred for Request TestQuery")),
+                It.Is<It.IsAnyType>((o, t) =>
+                    o.ToString()!.Contains("Unhandled Exception occurred for Request TestQuery")),
                 It.IsAny<Exception>(),
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             Times.Once);

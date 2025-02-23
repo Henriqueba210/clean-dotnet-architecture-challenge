@@ -25,11 +25,11 @@ public class LoggingBehaviorTest
     public async Task Handle_SuccessfulRequest_ShouldLogStartAndCompletion(TestQuery request)
     {
         // Arrange
-        var expectedResult = Result.Success();
+        Result? expectedResult = Result.Success();
         RequestHandlerDelegate<Result> next = () => Task.FromResult(expectedResult);
 
         // Act
-        var result = await _behavior.Handle(request, next, CancellationToken.None);
+        Result result = await _behavior.Handle(request, next, CancellationToken.None);
 
         // Assert
         result.ShouldBe(expectedResult);
@@ -58,11 +58,11 @@ public class LoggingBehaviorTest
     public async Task Handle_FailedRequest_ShouldLogError(TestQuery request)
     {
         // Arrange
-        var expectedResult = Result.Error("Test error");
+        Result? expectedResult = Result.Error("Test error");
         RequestHandlerDelegate<Result> next = () => Task.FromResult(expectedResult);
 
         // Act
-        var result = await _behavior.Handle(request, next, CancellationToken.None);
+        Result result = await _behavior.Handle(request, next, CancellationToken.None);
 
         // Assert
         result.ShouldBe(expectedResult);

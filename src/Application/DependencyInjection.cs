@@ -29,7 +29,7 @@ public static class DependencyInjection
             config.AddOpenBehavior(typeof(ExceptionHandlingBehavior<,>));
             config.AddOpenBehavior(typeof(LoggingBehavior<,>));
         });
-        
+
         return services;
     }
 }

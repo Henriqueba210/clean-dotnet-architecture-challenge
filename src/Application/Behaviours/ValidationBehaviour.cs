@@ -1,3 +1,5 @@
+using System.Reflection;
+
 using Ardalis.Result;
 
 using FluentValidation;
@@ -28,7 +30,7 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
             return await next();
         }
 
-        var requestName = typeof(TRequest).Name;
+        string requestName = typeof(TRequest).Name;
         ValidationContext<TRequest> validationContext = new(request);
         ValidationResult[] validationResults = await Task.WhenAll(
             validators.Select(v => v.ValidateAsync(validationContext, cancellationToken)));
@@ -52,10 +54,10 @@ internal sealed class ValidationBehavior<TRequest, TResponse>(
 
         List<ValidationError> validationErrors = failures.Select(f => new ValidationError(f.ErrorMessage)).ToList();
 
-        var resultType = typeof(Result<>).MakeGenericType(typeof(TResponse).GetGenericArguments());
-        var invalidMethod = resultType.GetMethod(nameof(Result<object>.Invalid), 
+        Type resultType = typeof(Result<>).MakeGenericType(typeof(TResponse).GetGenericArguments());
+        MethodInfo? invalidMethod = resultType.GetMethod(nameof(Result<object>.Invalid),
             new[] { typeof(List<ValidationError>) });
-        
+
         return (TResponse)invalidMethod!.Invoke(null, [validationErrors])!;
     }
 }

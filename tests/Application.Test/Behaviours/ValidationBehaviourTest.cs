@@ -1,4 +1,5 @@
 using AutoFixture.Xunit2;
+
 using FluentValidation;
 
 using Location.Application.Behaviours;
@@ -16,14 +17,15 @@ public class ValidationBehaviorTest
     public async Task Handle_WithNoValidators_ShouldReturnNextResult(TestQuery request)
     {
         // Arrange
-        var logger = _fixture.Freeze<ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>>();
-        var validators = new List<IValidator<TestQuery>>();
-        var behavior = new ValidationBehavior<TestQuery, Result<TestResponse>>(validators, logger);
-        var response = new TestResponse { Id = 1 };
-        var expectedResult = Result<TestResponse>.Success(response);
+        ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>? logger =
+            _fixture.Freeze<ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>>();
+        List<IValidator<TestQuery>> validators = new();
+        ValidationBehavior<TestQuery, Result<TestResponse>> behavior = new(validators, logger);
+        TestResponse response = new() { Id = 1 };
+        Result<TestResponse>? expectedResult = Result<TestResponse>.Success(response);
 
         // Act
-        var result = await behavior.Handle(
+        Result<TestResponse> result = await behavior.Handle(
             request,
             () => Task.FromResult(expectedResult),
             CancellationToken.None);
@@ -38,17 +40,18 @@ public class ValidationBehaviorTest
     public async Task Handle_WithValidators_NoErrors_ShouldReturnNextResult(TestQuery request)
     {
         // Arrange
-        var logger = _fixture.Freeze<ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>>();
-        var validator = new TestValidator();
-        var validators = new List<IValidator<TestQuery>> { validator };
-        var behavior = new ValidationBehavior<TestQuery, Result<TestResponse>>(validators, logger);
-        var response = new TestResponse { Id = 1 };
-        var expectedResult = Result<TestResponse>.Success(response);
+        ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>? logger =
+            _fixture.Freeze<ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>>();
+        TestValidator validator = new();
+        List<IValidator<TestQuery>> validators = new() { validator };
+        ValidationBehavior<TestQuery, Result<TestResponse>> behavior = new(validators, logger);
+        TestResponse response = new() { Id = 1 };
+        Result<TestResponse>? expectedResult = Result<TestResponse>.Success(response);
 
         request.Name = "Valid";
 
         // Act
-        var result = await behavior.Handle(
+        Result<TestResponse> result = await behavior.Handle(
             request,
             () => Task.FromResult(expectedResult),
             CancellationToken.None);
@@ -63,18 +66,19 @@ public class ValidationBehaviorTest
     public async Task Handle_WithMultipleValidators_NoErrors_ShouldReturnNextResult(TestQuery request)
     {
         // Arrange
-        var logger = _fixture.Freeze<ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>>();
-        var validator1 = new TestValidator();
-        var validator2 = new TestValidator();
-        var validators = new List<IValidator<TestQuery>> { validator1, validator2 };
-        var behavior = new ValidationBehavior<TestQuery, Result<TestResponse>>(validators, logger);
-        var response = new TestResponse { Id = 1 };
-        var expectedResult = Result<TestResponse>.Success(response);
+        ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>? logger =
+            _fixture.Freeze<ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>>();
+        TestValidator validator1 = new();
+        TestValidator validator2 = new();
+        List<IValidator<TestQuery>> validators = new() { validator1, validator2 };
+        ValidationBehavior<TestQuery, Result<TestResponse>> behavior = new(validators, logger);
+        TestResponse response = new() { Id = 1 };
+        Result<TestResponse>? expectedResult = Result<TestResponse>.Success(response);
 
         request.Name = "Valid";
 
         // Act
-        var result = await behavior.Handle(
+        Result<TestResponse> result = await behavior.Handle(
             request,
             () => Task.FromResult(expectedResult),
             CancellationToken.None);
@@ -89,17 +93,18 @@ public class ValidationBehaviorTest
     public async Task Handle_WithValidationErrors_ShouldReturnInvalidResult(TestQuery request)
     {
         // Arrange
-        var logger = _fixture.Freeze<ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>>();
-        var validator = new TestValidator();
-        var validators = new List<IValidator<TestQuery>> { validator };
-        var behavior = new ValidationBehavior<TestQuery, Result<TestResponse>>(validators, logger);
-        var response = new TestResponse { Id = 1 };
-        var expectedResult = Result<TestResponse>.Success(response);
+        ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>? logger =
+            _fixture.Freeze<ILogger<ValidationBehavior<TestQuery, Result<TestResponse>>>>();
+        TestValidator validator = new();
+        List<IValidator<TestQuery>> validators = new() { validator };
+        ValidationBehavior<TestQuery, Result<TestResponse>> behavior = new(validators, logger);
+        TestResponse response = new() { Id = 1 };
+        Result<TestResponse>? expectedResult = Result<TestResponse>.Success(response);
 
         request.Name = string.Empty;
 
         // Act
-        var result = await behavior.Handle(
+        Result<TestResponse> result = await behavior.Handle(
             request,
             () => Task.FromResult(expectedResult),
             CancellationToken.None);
