@@ -8,7 +8,7 @@ public static class LocationEndpoints
     {
         RouteGroupBuilder? group = app.MapGroup("/api/location");
 
-        group.MapGet("/address/[postcode]", GetAddressEndpoint.HandleAsync)
+        group.MapGet("/address/{postcode}", GetAddressEndpoint.HandleAsync)
             .Produces<Location>()
             .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
             .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)

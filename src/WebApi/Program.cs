@@ -91,3 +91,5 @@ app.UseHttpsRedirection();
 app.UseSerilogRequestLogging();
 
 await app.RunAsync();
+
+public abstract partial class Program;
