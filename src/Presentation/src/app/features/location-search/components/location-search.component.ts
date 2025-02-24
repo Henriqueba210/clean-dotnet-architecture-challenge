@@ -66,8 +66,10 @@ export class LocationSearchComponent {
       .pipe(take(1))
       .subscribe({
         next: location => {
+          if (this.currentLocation) {
+            this.updateHistory(this.currentLocation);
+          }
           this.currentLocation = location;
-          this.updateHistory(location);
         },
         error: () => {
           this.snackBar.openFromComponent(ErrorSnackbarComponent, {
