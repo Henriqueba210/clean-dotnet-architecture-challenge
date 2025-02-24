@@ -7,8 +7,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
+# Copy solution and project files first
 COPY ["src/WebApi/WebApi.csproj", "src/WebApi/"]
+COPY ["src/Application/Application.csproj", "src/Application/"]
+COPY ["src/Domain/Domain.csproj", "src/Domain/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "src/Infrastructure/"]
+
+# Restore all packages
 RUN dotnet restore "src/WebApi/WebApi.csproj"
+
+# Copy the rest of the source code
 COPY . .
 WORKDIR "/src/src/WebApi"
 RUN dotnet build "WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/build

@@ -20,6 +20,19 @@
     networks:
       - location-network
 
+  location.frontend:
+    image: frontend
+    container_name: location-frontend
+    build:
+      context: ./src/Presentation
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - location.webapi
+    networks:
+      - location-network
+
 networks:
   location-network:
     driver: bridge

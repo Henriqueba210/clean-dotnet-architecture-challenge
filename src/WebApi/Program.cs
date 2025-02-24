@@ -29,6 +29,14 @@ builder.Services
     .AddInfrastructure()
     .AddOpenApi();
 
+
+builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
+{
+    builder.AllowAnyOrigin();
+    builder.AllowAnyMethod();
+    builder.AllowAnyHeader();
+}));
+
 #pragma warning disable EXTEXP0018
 builder.Services.AddHybridCache();
 #pragma warning restore EXTEXP0018
@@ -89,6 +97,8 @@ app.MapLocationEndpoints();
 app.UseHttpsRedirection();
 
 app.UseSerilogRequestLogging();
+
+app.UseCors();
 
 await app.RunAsync();
 
