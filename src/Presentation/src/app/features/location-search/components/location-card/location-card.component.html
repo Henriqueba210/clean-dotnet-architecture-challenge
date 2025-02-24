@@ -1,0 +1,65 @@
+<mat-card class="location-card" [class.history-card]="isHistory" [@cardAnimation]>
+  <mat-card-header>
+    <mat-card-title data-testid="card-title">{{ isHistory ? location.postcode : 'Current Location' }}</mat-card-title>
+  </mat-card-header>
+  
+  <mat-card-content>
+    <div class="distance-summary" data-testid="distance-summary">
+      <span>Distance to Heathrow:</span>
+      <span data-testid="distance-km"><strong>Kilometers:</strong> {{ location.distanceToHeathrowAirport.kilometers }} km</span>
+      <span data-testid="distance-mi"><strong>Miles:</strong> {{ location.distanceToHeathrowAirport.miles }} mi</span>
+    </div>
+
+    <!-- History card with expansion panel -->
+    <mat-expansion-panel *ngIf="isHistory" class="details-panel" data-testid="details-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          View Details
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <ng-container *ngTemplateOutlet="locationDetails"></ng-container>
+    </mat-expansion-panel>
+
+    <!-- Current location card with always visible details -->
+    <div *ngIf="!isHistory">
+      <ng-container *ngTemplateOutlet="locationDetails"></ng-container>
+    </div>
+
+    <!-- Template for location details -->
+    <ng-template #locationDetails>
+      <div class="location-details">
+        <section>
+          <h3>Basic Information</h3>
+          <p><strong>Postcode:</strong> {{ location.postcode }}</p>
+          <p><strong>Country:</strong> {{ location.country }}</p>
+          <p><strong>Region:</strong> {{ location.region || 'N/A' }}</p>
+          <p><strong>NHS Authority:</strong> {{ location.nhsHa || 'N/A' }}</p>
+        </section>
+
+        <section>
+          <h3>Administrative Areas</h3>
+          <p><strong>District:</strong> {{ location.adminDistrict || 'N/A' }}</p>
+          <p><strong>County:</strong> {{ location.adminCounty || 'N/A' }}</p>
+          <p><strong>Ward:</strong> {{ location.adminWard || 'N/A' }}</p>
+        </section>
+
+        <section>
+          <h3>Geographic Coordinates</h3>
+          <p><strong>Latitude:</strong> {{ location.latitude || 'N/A' }}</p>
+          <p><strong>Longitude:</strong> {{ location.longitude || 'N/A' }}</p>
+          <p><strong>Eastings:</strong> {{ location.eastings || 'N/A' }}</p>
+          <p><strong>Northings:</strong> {{ location.northings || 'N/A' }}</p>
+        </section>
+
+        <section>
+          <h3>Additional Codes</h3>
+          <ng-container *ngIf="location.codes">
+            <p><strong>Parish:</strong> {{ location.codes.parish || 'N/A' }}</p>
+            <p><strong>Parliamentary Constituency:</strong> {{ location.codes.parliamentaryConstituency || 'N/A' }}</p>
+          </ng-container>
+        </section>
+      </div>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

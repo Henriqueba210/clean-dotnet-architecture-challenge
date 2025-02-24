@@ -1,0 +1,61 @@
+@use '@angular/material' as mat;
+
+// Include only the components you're using
+@include mat.core();
+
+// Custom blue palette
+$blue-palette: (
+  50: #e3f2fd,
+  100: #bbdefb,
+  200: #90caf9,
+  300: #64b5f6,
+  400: #42a5f5,
+  500: #2196f3,
+  600: #1e88e5,
+  700: #1976d2,
+  800: #1565c0,
+  900: #0d47a1,
+  contrast: (
+    50: rgba(0,0,0,0.87),
+    100: rgba(0,0,0,0.87),
+    200: rgba(0,0,0,0.87),
+    300: rgba(0,0,0,0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  )
+);
+
+// Define the palettes using m2 prefix
+$primary-palette: mat.m2-define-palette(mat.$m2-blue-palette);
+$accent-palette: mat.m2-define-palette(mat.$m2-blue-grey-palette);
+$warn-palette: mat.m2-define-palette(mat.$m2-red-palette);
+
+// Light theme configuration
+$light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $primary-palette,
+    accent: $accent-palette,
+    warn: $warn-palette,
+  )
+));
+
+// Dark theme configuration
+$dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $primary-palette,
+    accent: $accent-palette,
+    warn: $warn-palette,
+  )
+));
+
+// Only include used component themes
+@include mat.button-theme($dark-theme);
+@include mat.card-theme($dark-theme);
+@include mat.form-field-theme($dark-theme);
+@include mat.input-theme($dark-theme);
+@include mat.snack-bar-theme($dark-theme);
+@include mat.toolbar-theme($dark-theme);

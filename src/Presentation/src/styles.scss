@@ -1,0 +1,87 @@
+@use '_variables' as *;
+@use '_mixins' as *;
+@use 'themes' as themes;
+@use '@angular/material' as mat;
+
+// Include material core styles
+@include mat.core();
+
+// Reset and base styles
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// Dark theme (default)
+.material-theme {
+  @include mat.all-component-themes(themes.$dark-theme);
+}
+
+body {
+  background-color: $primary-bg-dark;
+  color: $text-dark;
+  transition: background-color $transition-speed ease, color $transition-speed ease;
+  @include scrollbar;
+}
+
+// Common styles
+.main-container {
+  padding: 1rem;
+}
+
+// Light theme overrides
+@media (prefers-color-scheme: light) {
+  .material-theme {
+    @include mat.all-component-colors(themes.$light-theme);
+  }
+  
+  body {
+    background-color: $primary-bg-light;
+    color: $text-light;
+  }
+}
+
+// Material elevation override for cards and surfaces
+.mat-mdc-card {
+  border-radius: $card-radius !important;
+  @include card-hover;
+}
+
+// Button styles
+.mat-mdc-raised-button {
+  border-radius: $border-radius !important;
+}
+
+// Input styles
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+// Error snackbar styles
+.error-snackbar {
+  &.mat-mdc-snack-bar-container {
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-container-color: #323232;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  .mdc-snackbar__surface {
+    min-width: 300px !important;
+    padding: 8px 16px !important;
+  }
+
+  .mat-mdc-snack-bar-label {
+    padding: 0;
+  }
+  
+  .mat-icon {
+    color: #f44336; // Red color for warning icon
+  }
+}

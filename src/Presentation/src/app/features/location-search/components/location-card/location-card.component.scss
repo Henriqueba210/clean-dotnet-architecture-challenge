@@ -1,0 +1,91 @@
+@use '_variables' as *;
+
+
+:host {
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --text-opacity: 0.87;
+}
+
+.location-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-sm $spacing-lg; // Increased left/right padding
+
+  .distance-summary {
+    display: flex;
+    flex-direction: column;
+    padding: $spacing-md;
+    margin: 0 $spacing-md $spacing-md; // Remove top margin, keep horizontal and bottom
+    border-radius: $border-radius;
+    background: var(--card-bg);
+
+    span {
+      &:first-child {
+        font-weight: 500;
+        margin-bottom: $spacing-sm;
+        opacity: var(--text-opacity);
+      }
+
+      &:not(:first-child) {
+        margin-left: $spacing-md;
+        margin-bottom: $spacing-xs;
+      }
+    }
+  }
+
+  .details-panel {
+    background: transparent;
+    margin: 0 $spacing-md $spacing-md $spacing-md;  // Added bottom margin
+
+    ::ng-deep .mat-expansion-panel-body {
+      padding: $spacing-md;
+    }
+
+    ::ng-deep .mat-expansion-panel-header {
+      padding: $spacing-sm $spacing-md;
+    }
+  }
+
+  .location-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-lg;
+    padding: $spacing-md;
+
+    section {
+      h3 {
+        color: inherit;
+        margin-bottom: $spacing-md;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        padding-bottom: $spacing-sm;
+      }
+
+      p {
+        margin-bottom: $spacing-sm;
+        
+        strong {
+          color: inherit;
+          opacity: var(--text-opacity);
+        }
+      }
+    }
+  }
+}
+
+.history-card {
+  margin-top: $spacing-md;
+}
+
+:host-context(.dark-theme) {
+  .location-card {
+    .distance-summary {
+      background: var(--card-bg);
+    }
+
+    .details-panel {
+      background: transparent;
+    }
+  }
+}
